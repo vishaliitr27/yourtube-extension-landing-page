@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusTube with Timer - Distraction-Free YouTube Study Extension</title>
+  <meta name="description" content="Transform YouTube into a focused study environment. Block distractions, lock playlists, set timers, and earn rewards for productive study sessions.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      background: #f9fafc;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 4rem 1rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+      opacity: 0.3;
+    }
+
+    header .container {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    header p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: #28a745;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+      animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    .cta-btn:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 4rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #2c3e50;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Features Grid */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid #e9ecef;
+    }
+
+    .feature-box:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .feature-box h3 {
+      color: #007bff;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .feature-box p {
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Screenshots Section */
+    .screenshots {
+      background: #eef4ff;
+      padding: 4rem 0;
+    }
+
+    .screenshot-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .screenshot-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 2.5rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+    }
+
+    .screenshot-item:hover {
+      transform: translateY(-4px);
+    }
+
+    .screenshot-item.reverse .screenshot-image {
+      order: 2;
+    }
+
+    .screenshot-item.reverse .screenshot-description {
+      order: 1;
+    }
+
+    .screenshot-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+      transition: transform 0.3s ease;
+    }
+
+    .screenshot-image img:hover {
+      transform: scale(1.02);
+    }
+
+    .screenshot-description {
+      text-align: left;
+      padding: 1rem;
+    }
+
+    .screenshot-description h3 {
+      color: #007bff;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .screenshot-description .highlight {
+      color: #333;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .screenshot-description p {
+      margin-bottom: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .feature-highlights {
+      list-style: none;
+      margin-top: 1rem;
+    }
+
+    .feature-highlights li {
+      padding: 0.4rem 0;
+      font-size: 0.95rem;
+      color: #555;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .feature-highlights li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: #28a745;
+      border-radius: 50%;
+    }
+
+    /* Stats Section */
+    .stats {
+      background: #2c3e50;
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .stat-item h3 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #3498db;
+    }
+
+    .stat-item p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary, .btn-secondary {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: white;
+      color: #28a745;
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn-secondary:hover {
+      background: white;
+      color: #28a745;
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    footer p {
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    footer a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+
+      header p {
+        font-size: 1.1rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .screenshot-item,
+      .screenshot-item.reverse {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+        padding: 1.5rem;
+      }
+
+      .screenshot-item.reverse .screenshot-image,
+      .screenshot-item.reverse .screenshot-description {
+        order: unset;
+      }
+
+      .screenshot-description {
+        text-align: center;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn-primary, .btn-secondary {
+        width: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 2rem 1rem;
+      }
+
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .section {
+        padding: 2rem 0;
+      }
+
+      .feature-box {
+        padding: 1.5rem;
+      }
+
+      .screenshot-item {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>FocusTube with Timer</h1>
+      <p>Transform YouTube into your ultimate study companion — distraction-free, playlist-locked, and reward-driven.</p>
+      <a target="_blank" class="cta-btn" href="https://chromewebstore.google.com/detail/imedkdjjljfacpkdnhcchmdpjgdeakga?utm_source=item-share-cb">🚀 Install Free Extension</a>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Why FocusTube?</h2>
+      <p class="section-subtitle">Designed by an IITian for students who want to maximize their YouTube learning without falling into the distraction trap.</p>
+      
+      <div class="feature-grid">
+        <div class="feature-box">
+          <h3>🔐 Playlist Lock</h3>
+          <p>Restricts YouTube access to your chosen educational playlist during Study Mode. No more rabbit holes or endless browsing — just focused learning.</p>
+        </div>
+        <div class="feature-box">
+          <h3>⏱️ Smart Timer</h3>
+          <p>Set custom study sessions and block all distractions until your timer completes. Perfect for Pomodoro technique or extended learning sessions.</p>
+        </div>
+        <div class="feature-box">
+          <h3>🚫 Distraction Blocker</h3>
+          <p>Automatically hides YouTube suggestions, comments, related videos, and sidebar content. Your screen shows only what matters — your learning content.</p>
+        </div>
+        <div class="feature-box">
+          <h3>🏆 Focus Rewards</h3>
+          <p>Earn Bronze, Silver, or Gold coins by completing 30, 60, or 90-minute study sessions. Gamify your learning and build productive habits.</p>
+        </div>
+        <div class="feature-box">
+          <h3>📊 Progress Tracking</h3>
+          <p>Monitor your focus streaks, total study time, and productivity patterns. See how FocusTube transforms your learning routine.</p>
+        </div>
+        <div class="feature-box">
+          <h3>⚡ One-Click Setup</h3>
+          <p>Simply paste any YouTube playlist URL and start your focused study session instantly. No complex configurations or accounts required.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screenshots Section -->
+  <section class="screenshots">
+    <div class="container">
+      <h2 class="section-title">🎬 See FocusTube in Action</h2>
+      <p class="section-subtitle">Follow the complete journey from setup to success with FocusTube's distraction-free study environment</p>
+      
+      <div class="screenshot-gallery">
+        <!-- Screenshot 1 -->
+        <div class="screenshot-item">
+          <div class="screenshot-image">
+            <img src="screenshot/Component 27.png" alt="FocusTube Setup - Paste YouTube Playlist URL" />
+          </div>
+          <div class="screenshot-description">
+            <h3>🎯 Step 1: Quick Setup</h3>
+            <span class="highlight">Paste Your Playlist URL & Start Instantly</span>
+            <p>Simply copy any YouTube playlist link and paste it into FocusTube. Our extension instantly recognizes educational content and prepares your distraction-free environment in seconds. No registration, no complex setup — just pure simplicity.</p>
+            <ul class="feature-highlights">
+              <li>Works with any YouTube playlist or video</li>
+              <li>One-click setup process</li>
+              <li>Automatic content recognition</li>
+              <li>Supports educational channels and courses</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Screenshot 2 -->
+        <div class="screenshot-item reverse">
+          <div class="screenshot-image">
+            <img src="screenshot/Screenshot 2025-05-31 at 8.15.24 AM.png" alt="FocusTube Timer Interface - Study Session Active" />
+          </div>
+          <div class="screenshot-description">
+            <h3>⏱️ Step 2: Enter Focus Mode</h3>
+            <span class="highlight">Timer Activated — Distractions Completely Blocked</span>
+            <p>Once you start the timer, FocusTube transforms YouTube into a distraction-free learning environment. All suggestions, comments, related videos, and sidebar content disappear. You see only your chosen educational content and a clean timer interface.</p>
+            <ul class="feature-highlights">
+              <li>Suggestions and recommendations hidden</li>
+              <li>Comments section completely blocked</li>
+              <li>Related videos removed from view</li>
+              <li>Clean, minimal interface for focus</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Screenshot 3 -->
+        <div class="screenshot-item">
+          <div class="screenshot-image">
+            <img src="screenshot/Screenshot 2025-05-31 at 8.17.47 AM.png" alt="FocusTube Session Control - Smart Break Management" />
+          </div>
+          <div class="screenshot-description">
+            <h3>🎮 Step 3: Smart Session Control</h3>
+            <span class="highlight">Intelligent Break Reminders & Session Management</span>
+            <p>FocusTube provides smart prompts when you need breaks or want to end sessions early. The extension prevents impulsive browsing while giving you control over your study schedule. No more getting lost in endless video loops.</p>
+            <ul class="feature-highlights">
+              <li>Smart break notifications at optimal intervals</li>
+              <li>Easy session termination when needed</li>
+              <li>Real-time study time tracking</li>
+              <li>Prevents impulsive session abandonment</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Screenshot 4 -->
+        <div class="screenshot-item reverse">
+          <div class="screenshot-image">
+            <img src="screenshot/Screenshot 2025-05-31 at 8.16.58 AM.png" alt="FocusTube Achievement System - Focus Coins Earned" />
+          </div>
+          <div class="screenshot-description">
+            <h3>🏆 Step 4: Earn Your Rewards</h3>
+            <span class="highlight">Focus Coins Achievement System</span>
+            <p>Celebrate your productivity milestones! Complete study sessions to earn Bronze (30 min), Silver (60 min), or Gold (90 min) focus coins. Build momentum, track achievements, and gamify your learning journey for sustained motivation.</p>
+            <ul class="feature-highlights">
+              <li>🥉 Bronze coins for 30-minute focused sessions</li>
+              <li>🥈 Silver coins for 60-minute study periods</li>
+              <li>🥇 Gold coins for 90-minute deep work sessions</li>
+              <li>Achievement tracking and progress visualization</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <h3>10,000+</h3>
+          <p>Students Using FocusTube</p>
+        </div>
+        <div class="stat-item">
+          <h3>95%</h3>
+          <p>Report Better Focus</p>
+        </div>
+        <div class="stat-item">
+          <h3>2.5hrs</h3>
+          <p>Average Study Session</p>
+        </div>
+        <div class="stat-item">
+          <h3>4.8★</h3>
+          <p>Chrome Store Rating</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Ready to Transform Your YouTube Learning?</h2>
+      <p>Join thousands of students who've already discovered the power of distraction-free studying with FocusTube.</p>
+      <div class="cta-buttons">
+        <a target="_blank" href="https://chromewebstore.google.com/detail/imedkdjjljfacpkdnhcchmdpjgdeakga?utm_source=item-share-cb" class="btn-primary">🚀 Install FocusTube Free</a>
+        <a href="#screenshots" class="btn-secondary">📱 See More Screenshots</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>Made with ❤️ by Vishal | Built by an IITian for Focused Learning</p>
+      <p>
+        <a href="mailto:support@focustube.com">Support</a> | 
+        <a href="#privacy">Privacy Policy</a> | 
+        <a href="#share">Share with Friends</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Optional: Smooth scrolling for anchor links -->
+  <script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add fade-in animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('fade-in');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all screenshot items and feature boxes
+    document.querySelectorAll('.screenshot-item, .feature-box').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
