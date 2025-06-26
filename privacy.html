@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - FocusTube with Timer</title>
+  <link rel="icon" href="icons/icon16.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #f9fafb;
+      --text: #1f2937;
+      --text-light: #6b7280;
+      --border: #e5e7eb;
+      --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+      color: white;
+      padding: 3rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .logo {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .subtitle {
+      font-size: 1.1rem;
+      font-weight: 400;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      color: white;
+    }
+    
+    /* Main Content */
+    main {
+      padding: 3rem 0;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+    }
+    
+    .toc {
+      background: var(--secondary);
+      padding: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .toc h2 {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .toc ul {
+      list-style: none;
+      columns: 2;
+    }
+    
+    .toc li {
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    
+    .toc li::before {
+      content: "•";
+      color: var(--primary-light);
+      position: absolute;
+      left: 0;
+      font-size: 1.2rem;
+    }
+    
+    .toc a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .toc a:hover {
+      color: var(--primary);
+    }
+    
+    .content {
+      padding: 2rem;
+    }
+    
+    section {
+      margin-bottom: 2.5rem;
+      scroll-margin-top: 1rem;
+    }
+    
+    h2 {
+      color: var(--primary);
+      font-size: 1.6rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    h2 i {
+      background: rgba(79, 70, 229, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    
+    p {
+      margin-bottom: 1.2rem;
+      color: var(--text-light);
+    }
+    
+    .highlight {
+      background: rgba(79, 70, 229, 0.05);
+      border-left: 4px solid var(--primary);
+      padding: 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+    
+    ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    li {
+      margin-bottom: 0.7rem;
+      color: var(--text-light);
+    }
+    
+    .contact-box {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 1.5rem;
+      border: 1px solid #dbeafe;
+    }
+    
+    .contact-icon {
+      background: var(--primary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    
+    .contact-info a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--secondary);
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+    }
+    
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .footer-logo {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .copyright {
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .toc ul {
+        columns: 1;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      header {
+        padding: 2rem 0;
+      }
+      
+      .content, .toc {
+        padding: 1.5rem;
+      }
+      
+      .contact-box {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.7rem;
+      }
+      
+      h2 {
+        font-size: 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h1>Privacy Policy</h1>
+        <p class="subtitle">Your privacy is our priority. Learn how FocusTube with Timer protects your data.</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="content-card">
+        <div class="toc">
+          <h2><i class="fas fa-bookmark"></i> Table of Contents</h2>
+          <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#information-collected">Information We Collect</a></li>
+            <li><a href="#data-usage">How Your Data is Used</a></li>
+            <li><a href="#permissions">Chrome Permissions</a></li>
+            <li><a href="#third-party">Third-Party Services</a></li>
+            <li><a href="#children">Children's Privacy</a></li>
+            <li><a href="#changes">Changes to This Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div class="content">
+          <section id="introduction">
+            <h2><i class="fas fa-info-circle"></i> Introduction</h2>
+            <p>FocusTube with Timer is a Chrome extension designed to help users stay focused while watching educational content on YouTube. We are committed to protecting your privacy and ensuring transparency about how we use your data.</p>
+            <div class="highlight">
+              <p><strong>Core Principle:</strong> Your data never leaves your device. We believe privacy is a fundamental right, not a premium feature.</p>
+            </div>
+          </section>
+          
+          <section id="information-collected">
+            <h2><i class="fas fa-database"></i> Information We Collect</h2>
+            <p>We do <strong>not</strong> collect any personal data from users. The extension uses Chrome storage to locally store settings like:</p>
+            <ul>
+              <li>Playlist URLs you add for focused study sessions</li>
+              <li>Timer duration settings and session history</li>
+              <li>Study mode preferences and blocking rules</li>
+              <li>Coin rewards and achievement progress (stored locally)</li>
+            </ul>
+            <p>All data remains exclusively on your device and is never transmitted externally.</p>
+          </section>
+          
+          <section id="data-usage">
+            <h2><i class="fas fa-laptop"></i> How Your Data is Used</h2>
+            <p>All information is stored locally on your device and is never transmitted to our servers or third parties. This ensures your study data and preferences stay private and secure.</p>
+            <p>The extension uses your data exclusively for these purposes:</p>
+            <ul>
+              <li>Remembering your preferred playlists between sessions</li>
+              <li>Maintaining your timer settings and study history</li>
+              <li>Tracking your reward progress for motivation</li>
+              <li>Preserving your distraction-blocking preferences</li>
+            </ul>
+          </section>
+          
+          <section id="permissions">
+            <h2><i class="fas fa-shield-alt"></i> Chrome Permissions</h2>
+            <p>FocusTube requests specific Chrome permissions to enhance your experience:</p>
+            <ul>
+              <li><strong>Storage:</strong> Save your settings locally on your device</li>
+              <li><strong>Tabs:</strong> Detect YouTube tabs to apply focus mode</li>
+              <li><strong>Scripting:</strong> Block distractions on YouTube pages</li>
+              <li><strong>ActiveTab:</strong> Enable one-click activation on YouTube</li>
+            </ul>
+            <p>These permissions are used strictly for in-extension functionality and are never abused to access your browsing data.</p>
+          </section>
+          
+          <section id="third-party">
+            <h2><i class="fas fa-ban"></i> Third-Party Services</h2>
+            <p>We do not use any third-party services such as analytics or advertising networks in the Chrome extension. Your study data never leaves your browser.</p>
+            <p>On our website (yourtube.co.in), we may use Google Analytics to understand traffic patterns in an anonymous, aggregated way. This data cannot be linked to individual users.</p>
+          </section>
+          
+          <section id="children">
+            <h2><i class="fas fa-child"></i> Children's Privacy</h2>
+            <p>FocusTube is not directed toward individuals under 13 years of age. We do not knowingly collect any personal information from children.</p>
+            <p>If you believe a child has provided us with personal information, please contact us immediately so we can take appropriate action.</p>
+          </section>
+          
+          <section id="changes">
+            <h2><i class="fas fa-sync-alt"></i> Changes to This Policy</h2>
+            <p>We may update this privacy policy occasionally to reflect changes in our practices or for other operational, legal, or regulatory reasons.</p>
+            <p>When we make changes, we will update the "Effective Date" at the top of this page. We encourage you to periodically review this page for the latest information on our privacy practices.</p>
+          </section>
+          
+          <section id="contact">
+            <h2><i class="fas fa-envelope"></i> Contact Us</h2>
+            <p>If you have any questions or concerns regarding this Privacy Policy, please contact our support team:</p>
+            
+            <div class="contact-box">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-info">
+                <p><strong>Email Support</strong></p>
+                <p><a href="mailto:vk7259719@gmail.com">vk7259719@gmail.com</a></p>
+                <p>We typically respond within 24 hours</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <i class="fas fa-clock"></i>
+          FocusTube with Timer
+        </div>
+        <p class="copyright">
+          &copy; 2025 FocusTube with Timer — Created by an IITian. 
+          Your privacy matters to us.
+        </p>
+        <p>Effective Date: June 2025</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
